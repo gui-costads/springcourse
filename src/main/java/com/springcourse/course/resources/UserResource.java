@@ -1,4 +1,4 @@
-package com.springcourse.course;
+package com.springcourse.course.resources;
 
 import com.springcourse.course.entities.User;
 import com.springcourse.course.services.UserService;
