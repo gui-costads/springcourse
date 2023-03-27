@@ -1,7 +1,7 @@
 package com.springcourse.course.config;
 
 import com.springcourse.course.entities.User;
-import com.springcourse.course.repository.UserRepository;
+import com.springcourse.course.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
