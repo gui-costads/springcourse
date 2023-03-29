@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderResource {
-    private OrderService orderService;
+    private final OrderService orderService;
 
     public OrderResource(OrderService orderService) {
         this.orderService = orderService;
@@ -25,7 +25,7 @@ public class OrderResource {
         return  ResponseEntity.ok().body(orderList);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Order> findByid(@PathVariable Long id){
+    public ResponseEntity<Order> findById(@PathVariable Long id){
         Order order = orderService.findById(id);
         return ResponseEntity.ok().body(order);
     }

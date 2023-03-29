@@ -1,7 +1,6 @@
 package com.springcourse.course.services;
 
 import com.springcourse.course.entities.Order;
-import com.springcourse.course.entities.User;
 import com.springcourse.course.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,6 @@ public class OrderService {
         return orderRepository.findAll();
     }
     public Order findById(Long id){
-
         return orderRepository.findById(id).get();
     }
 }
