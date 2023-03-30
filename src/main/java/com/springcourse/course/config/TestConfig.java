@@ -2,10 +2,12 @@ package com.springcourse.course.config;
 
 import com.springcourse.course.entities.Category;
 import com.springcourse.course.entities.Order;
+import com.springcourse.course.entities.Product;
 import com.springcourse.course.entities.User;
 import com.springcourse.course.entities.enums.OrderStatus;
 import com.springcourse.course.repositories.CategoryRepository;
 import com.springcourse.course.repositories.OrderRepository;
+import com.springcourse.course.repositories.ProductRepository;
 import com.springcourse.course.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -20,26 +22,49 @@ public class TestConfig implements CommandLineRunner {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final CategoryRepository categoryRepository;
-    public TestConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository) {
+    private final ProductRepository productRepository;
+
+    public TestConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
     }
     @Override
     public void run(String... args) throws Exception {
         User user1 = new User(null, "maria", "maria@gmail", "987612736273", "12356");
         User user2 = new User(null, "joao", "joao@gmail", "12783612837", "12635");
+        userRepository.saveAll(Arrays.asList(user1,user2));
+
 
         Order  order1 = new Order(null, Instant.parse("2023-03-26T20:03:30Z"), user1, OrderStatus.PAID);
         Order  order2 = new Order(null, Instant.parse("2023-03-26T19:03:30Z"), user2, OrderStatus.CANCELED);
         Order  order3 = new Order(null, Instant.parse("2023-03-26T20:05:30Z"), user1, OrderStatus.DELIVERED);
 
+        orderRepository.saveAll(Arrays.asList(order1,order2,order3));
+
+
         Category category1 = new Category(null, "Books");
         Category category2 = new Category(null, "Computers");
+        Category category3 = new Category(null, "Eletronics");
+
+        Product product1 = new Product(null, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
+        Product product2 = new Product(null, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
+        Product product3 = new Product(null, "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "");
+        Product product4 = new Product(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
+        Product product5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
+        categoryRepository.saveAll(Arrays.asList(category1,category2, category3));
+        productRepository.saveAll(Arrays.asList(product1,product2,product3, product4, product5));
 
 
-        userRepository.saveAll(Arrays.asList(user1,user2));
-        orderRepository.saveAll(Arrays.asList(order1,order2,order3));
-        categoryRepository.saveAll(Arrays.asList(category1,category2));
+
+
+        product1.getCategories().add(category2);
+        product2.getCategories().add(category1);
+        product2.getCategories().add(category3);
+        product3.getCategories().add(category3);
+        product4.getCategories().add(category3);
+        product5.getCategories().add(category1);
+        productRepository.saveAll(Arrays.asList(product1,product2,product3, product4, product5));
     }
 }
