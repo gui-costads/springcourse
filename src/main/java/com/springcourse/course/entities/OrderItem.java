@@ -69,4 +69,8 @@ public class OrderItem {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public Double getSubTotal(){
+        return price * quantity;
+    }
 }

@@ -1,5 +1,6 @@
 package com.springcourse.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -11,6 +12,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Instant instant;
+    @JsonIgnore
     @OneToOne
     @MapsId
     private Order order;
@@ -19,8 +21,33 @@ public class Payment {
     }
 
     public Payment(Long id, Instant instant, Order order) {
+        super();
         this.id = id;
         this.instant = instant;
+        this.order = order;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Instant getInstant() {
+        return instant;
+    }
+
+    public void setInstant(Instant instant) {
+        this.instant = instant;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
         this.order = order;
     }
 

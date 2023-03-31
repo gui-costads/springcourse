@@ -1,7 +1,6 @@
 package com.springcourse.course.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springcourse.course.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
@@ -10,7 +9,6 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
@@ -20,7 +18,8 @@ public class Order implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant instant;
 
-    private Integer orderStatus;
+    @Enumerated(EnumType.O)
+    private OrderStatus orderStatus;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -35,11 +34,11 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Long id, Instant instant, User user, OrderStatus orderStatus) {
+    public Order(Long id, Instant instant, User client, OrderStatus orderStatus) {
         this.id = id;
         this.instant = instant;
-        this.client = user;
-        setOrderStatus(orderStatus);
+        this.client = client;
+        this.orderStatus = orderStatus;
     }
 
     public Long getId() {
@@ -67,13 +66,11 @@ public class Order implements Serializable {
     }
 
     public OrderStatus getOrderStatus() {
-        return OrderStatus.valueOf(orderStatus);
+        return orderStatus;
     }
 
     public void setOrderStatus(OrderStatus orderStatus) {
-        if(orderStatus != null){
-            this.orderStatus = orderStatus.getCode();
-        }
+        this.orderStatus = orderStatus;
     }
 
     public Set<OrderItem> getItems(){
@@ -109,4 +106,9 @@ public class Order implements Serializable {
                 ", client=" + client +
                 '}';
     }
+
+    public Double getTotal(){
+        return items.stream().map(OrderItem::getSubTotal).reduce(0.0,(x,y) ->  x+y, Double::sum);
+    }
+
 }
