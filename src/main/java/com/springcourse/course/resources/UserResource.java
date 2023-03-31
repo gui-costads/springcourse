@@ -2,6 +2,7 @@ package com.springcourse.course.resources;
 
 import com.springcourse.course.entities.User;
 import com.springcourse.course.services.UserService;
+import org.apache.juli.logging.Log;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -36,5 +37,11 @@ public class UserResource {
                   .fromCurrentRequestUri().path("/{id}")
                   .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(user);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+
     }
 }
