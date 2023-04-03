@@ -2,6 +2,7 @@ package com.springcourse.course.services;
 
 import com.springcourse.course.entities.User;
 import com.springcourse.course.repositories.UserRepository;
+import com.springcourse.course.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,7 +20,7 @@ public class UserService {
         return userRepository.findAll();
     }
     public User findById(Long id){
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User createUser(User user){
